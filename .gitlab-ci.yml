@@ -3,7 +3,7 @@
 # https://docs.gitlab.com/ce/ci/docker/using_docker_build.html#use-docker-in-docker-executor
 # https://gitlab.com/rychly-edu/docker/docker-openwrt-imagebuilder/container_registry
 
-image: prajval7433/docker-openwrt-imagebuilder:22.03.1-ipq40xx
+image: sturdynetoci/docker-openwrt-imagebuilder:22.03.1-ipq40xx
 
 build:
   stage: build
