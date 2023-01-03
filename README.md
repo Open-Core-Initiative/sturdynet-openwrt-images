@@ -1,6 +1,6 @@
 # OpenWrt Images
 
-https://ravalprajval.gitlab.io/openwrt-images/BRANCH_NAME_HERE
+https://vOCI.gitlab.io/openwrt-images/BRANCH_NAME_HERE
 
 Custom images of OpenWrt (source code and builds).
 
