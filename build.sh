@@ -12,7 +12,7 @@ mv -v ${CI_PROJECT_DIR}/keys/* ${IMAGEBUILDER_HOME}/keys/
 cat >> "${CI_PROJECT_DIR}/repositories.conf" <<END
 
 ## Custom Repository
-src/gz custom_packages https://vOCI.gitlab.io/openwrt-packages/master/releases/${OPENWRT_VERSION}/packages/${OPENWRT_ARCH}/custom
+src/gz custom_packages https://vOCI.gitlab.io/openwrt-packages/main/releases/${OPENWRT_VERSION}/packages/${OPENWRT_ARCH}/custom
 END
 
 
