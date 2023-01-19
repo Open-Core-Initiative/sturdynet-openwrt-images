@@ -1,6 +1,6 @@
 # OpenWrt Images
 
-https://vOCI.gitlab.io/openwrt-images/BRANCH_NAME_HERE
+https://voci.gitlab.io/sturdynet/openwrt-images/BRANCH_NAME_HERE
 
 Custom images of OpenWrt (source code and builds).
 
