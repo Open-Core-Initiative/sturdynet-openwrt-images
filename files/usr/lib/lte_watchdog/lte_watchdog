@@ -1,0 +1,76 @@
+#!/bin/sh 
+#
+# checks dbus, modemmanager, and usb device statuses and restart appropriate interface
+#
+
+# Source common lib functions if needed
+#. /lib/functions.sh
+
+
+restart_modemmgr() {
+	echo "restarting modem manager";
+    service modemmanager restart; 
+    service flow_broker restart;                       
+    service ulogd restart;                             
+    service l7stats restart;                           
+} 
+                                                         
+restart_dbus() {
+	echo "restarting dbus";                     
+    rm -rf /var/run/dbus.pid;    
+    service dbus restart;                                              
+}
+
+bind_usb() {
+	echo "binding USB";
+	echo -n "1-0:1.0" > /sys/bus/usb/drivers/hub/bind
+}
+
+get_dbus_status() {
+	if pgrep dbus &> /dev/null; then
+		return 1;
+        else 
+		return 0;
+	fi;
+}
+
+get_mwan0_status() {
+	if mmcli -m 0 $> /dev/null; then
+		return 1;
+	else
+		return 0;
+	fi;	
+}
+
+get_usb_status() {
+	if test -d '/sys/bus/usb/drivers/hub/1-0:1.0'; then
+		return 1;
+	else
+		return 0;
+	fi;
+}
+
+while sleep 60; do
+	get_dbus_status
+	DBUS_UP=$?
+	get_mwan0_status
+	MWAN0_UP=$?
+	get_usb_status
+	USB_UP=$?
+	echo $DBUS_UP
+	echo $MWAN0_UP
+	echo $USB_UP
+	if [[ "$DBUS_UP" -eq 0 ]]; then
+		restart_dbus;
+		sleep 5;
+		restart_modemmgr;
+	elif [[ "$MWAN0_UP" -eq 0 ]]; then
+		restart_modemmgr;
+	elif [[ "$USB_UP" -eq 0 ]]; then
+		bind_usb;
+		sleep 5;
+		restart_modemmgr;
+	fi;
+done
+
+exit 0
