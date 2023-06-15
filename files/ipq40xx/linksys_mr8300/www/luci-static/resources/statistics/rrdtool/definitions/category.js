@@ -33,6 +33,7 @@ return baseclass.extend({
 				},
 				sources: {
 					if_octets: [ "tx", "rx" ],
+					if_octets: [ "tx", "rx" ],
 					if_octets: [ "tx", "rx" ]
 				},
 				options: {
@@ -54,11 +55,25 @@ return baseclass.extend({
 						color: "00ff00",	/* wwan0 */
 						title: "TMobile LTEBytes (Upload)"
 					},
+
 					if_octets_wwan0_rx: {
 						total: true,
 						color: "00ff00",	/* wwan0 */
 						title: "TMobile LTEBytes (Download)"
-					}
+					},
+
+					if_octets_464_lte6_tx: {
+                                                flip : true,            /* flip upload line */
+                                                total: true,
+                                                color: "00ff00",        /* wwan0 */
+                                                title: "464 TMobile LTEBytes (Upload)"
+                                        },
+
+                                        if_octets_464_lte6_rx: {
+                                                total: true,
+                                                color: "00ff00",        /* wwan0 */
+                                                title: "464 TMobile LTEBytes (Download)"
+                                        }
 				}
 			}
 		};
