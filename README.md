@@ -1,9 +1,8 @@
 # OpenWrt Images
 
-(https://open-core-initiative.github.io/sturdynet-openwrt-images/BRANCH/)
+All the images will be available to download at the following link, after the build process is completed: (https://open-core-initiative.github.io/sturdynet-openwrt-images/GITHUB_BRANCH_NAME/)
 
-Custom images of OpenWrt (source code and builds).
 
 ## Dependencies
 
-For building the OpenWrt images, it is recommended to use the [OpenWrt Image Builder in a Docker image](https://gitlab.com/ravalprajval/docker-openwrt-imagebuilder).
+For building the OpenWrt images, it uses the `sturdynetoci/docker-openwrt-imagebuilder:22.03.1-latest` docker image. Refer to the [sturdynet-openwrt-imagebuilder repository](https://github.com/Open-Core-Initiative/sturdynet-openwrt-imagebuilder) to understand more about how that image is build.
