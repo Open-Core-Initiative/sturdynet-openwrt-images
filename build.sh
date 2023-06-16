@@ -39,7 +39,7 @@ cp -f ${GITHUB_WORKSPACE}/repositories.conf ${IMAGEBUILDER_HOME}/repositories.co
 cd "${IMAGEBUILDER_HOME}"
 
 for I in ${GITHUB_WORKSPACE}/files/*; do
-	echo "NAME OF FOLDER: ${I}" ||
+	echo "NAME OF FOLDER: ${I##*/} & PATH OF FOLDER: ${I}" ||
 	exit 1
 done
 
