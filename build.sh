@@ -37,8 +37,15 @@ cp -f ${GITHUB_WORKSPACE}/repositories.conf ${IMAGEBUILDER_HOME}/repositories.co
 
 ## Build command to start image building process.
 cd "${IMAGEBUILDER_HOME}"
-make -j${nproc} image \
-PROFILE='glinet_gl-ap1300' \
-PACKAGES='netifyd netify-fwa luci mwan3 luci-app-mwan3 rtty tcpdump bmon iftop netcat socat jq comgt usb-modeswitch rtty-mbedtls luci-app-statistics collectd-mod-unixsock collectd-mod-mqtt wifischedule luci-app-wifischedule l7stats flow_broker python3-ubus python3-uci curl uhttpd-mod-lua kmod-mii kmod-usb-net kmod-usb-wdm kmod-usb-net-qmi-wwan uqmi openwisp-config openwisp-monitoring netjson-monitoring openvpn-mbedtls luci-app-openvpn luci-proto-modemmanager' \
-FILES='${GITHUB_WORKSPACE}/files' \
-BIN_DIR='${GITHUB_WORKSPACE}/bin' || exit 1
+
+for I in ${GITHUB_WORKSPACE}/files/*; do
+	echo "NAME OF FOLDER: ${I}" ||
+	exit 1
+done
+
+
+# make -j${nproc} image \
+# PROFILE='glinet_gl-ap1300' \
+# PACKAGES='netifyd netify-fwa luci mwan3 luci-app-mwan3 rtty tcpdump bmon iftop netcat socat jq comgt usb-modeswitch rtty-mbedtls luci-app-statistics collectd-mod-unixsock collectd-mod-mqtt wifischedule luci-app-wifischedule l7stats flow_broker python3-ubus python3-uci curl uhttpd-mod-lua kmod-mii kmod-usb-net kmod-usb-wdm kmod-usb-net-qmi-wwan uqmi openwisp-config openwisp-monitoring netjson-monitoring openvpn-mbedtls luci-app-openvpn luci-proto-modemmanager' \
+# FILES='${GITHUB_WORKSPACE}/files' \
+# BIN_DIR='${GITHUB_WORKSPACE}/bin' || exit 1

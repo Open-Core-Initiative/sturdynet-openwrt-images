@@ -1,9 +1,9 @@
-name: building sturdynet images
+name: building sturdynet images (target->ipq40xx)
 
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["main"]
+    branches: ["ipq40xx"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -26,17 +26,17 @@ jobs:
         uses: actions/checkout@v3
       - run: mkdir -p "${GITHUB_WORKSPACE}/bin"
       - run: ./build.sh
-      - run: mkdir -p "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
-      - run: mv LICENSE "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
-      - run: mv "${GITHUB_WORKSPACE}/bin" "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images"
-      - run: ./generate-webpage.sh "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}" > "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/index.html"
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          # Upload public repository
-          path: public
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+      # - run: mkdir -p "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
+      # - run: mv LICENSE "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
+      # - run: mv "${GITHUB_WORKSPACE}/bin" "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images"
+      # - run: ./generate-webpage.sh "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}" > "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/index.html"
+      # - name: Setup Pages
+      #   uses: actions/configure-pages@v3
+      # - name: Upload artifact
+      #   uses: actions/upload-pages-artifact@v1
+      #   with:
+      #     # Upload public repository
+      #     path: public
+      # - name: Deploy to GitHub Pages
+      #   id: deployment
+      #   uses: actions/deploy-pages@v2
