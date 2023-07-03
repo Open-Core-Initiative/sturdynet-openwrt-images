@@ -26,12 +26,11 @@ jobs:
 #         uses: actions/checkout@v3
         - run: echo login_response=$(curl --location 'https://owisp.sturdynet.net/api/v1/users/token/' --header 'Content-Type:application/json' --data '{"username":"praval","password":"vsat06$$"}') >> $GITHUB_ENV
         - run: echo token=$(echo $login_response | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g") >> $GITHUB_ENV
-        - run: echo bearer_token=$("Bearer $token") >> GITHUB_ENV
         - run: echo "bearer_token = $bearer_token"
         - name: "GETTING IMAGE DETAILS"
           run: |
             if [[ -z ${!bearer_token+x} ]]; then
-              echo get_image_response=$(curl --location 'https://owisp.sturdynet.net/api/v1/firmware-upgrader/build/' --header 'Authorization: $bearer_token') >> $GITHUB_ENV
+              echo get_image_response=$(curl --location 'https://owisp.sturdynet.net/api/v1/firmware-upgrader/build/' --header 'Authorization: Bearer ${bearer_token}') >> $GITHUB_ENV
             else
               echo get_image_response="Invalid Login Credentials" >> $GITHUB_ENV
             fi
