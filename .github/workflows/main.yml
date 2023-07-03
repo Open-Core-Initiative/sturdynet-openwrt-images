@@ -24,9 +24,17 @@ jobs:
     steps:
 #       - name: Checkout
 #         uses: actions/checkout@v3
-        - run: echo json=$(curl --location 'https://owisp.sturdynet.net/api/v1/users/token/' --header 'Content-Type:application/json' --data '{"username":"praval","password":"vsat06$$"}') >> $GITHUB_ENV
-        - run: echo bearer_token=$(echo $json | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g") >> $GITHUB_ENV
+        - run: echo login_response=$(curl --location 'https://owisp.sturdynet.net/api/v1/users/token/' --header 'Content-Type:application/json' --data '{"username":"praval","password":"vsat06$$"}') >> $GITHUB_ENV
+        - run: echo bearer_token=$(echo $login_response | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g") >> $GITHUB_ENV
         - run: echo "bearer_token = $bearer_token"
+        - name: "GETTING IMAGE DETAILS"
+          run: |
+            if $bearer_token then
+              echo get_image_response=$(curl --location 'https://owisp.sturdynet.net/api/v1/firmware-upgrader/build/' --header 'Authorization: Bearer $bearer_token') >> $GITHUB_ENV
+              echo $get_image_response
+            else
+              echo "Invalid Login Credentials"
+            fi
 #       - run: ./build.sh
 #       - run: mkdir -p "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
 #       - run: mv LICENSE "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
