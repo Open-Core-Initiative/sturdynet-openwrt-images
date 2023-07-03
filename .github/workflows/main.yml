@@ -25,9 +25,9 @@ jobs:
 #       - name: Checkout
 #         uses: actions/checkout@v3
         - run: json=$(curl --location 'https://owisp.sturdynet.net/api/v1/users/token/' --header 'Content-Type:application/json' --data '{"username":"praval","password":"vsat06$$"}')
-        - run: echo ${json}
+        - run: echo json
         - run: bearer_token=$(echo $json | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g")
-        - run: echo ${bearer_token}
+        - run: echo $bearer_token
 #       - run: ./build.sh
 #       - run: mkdir -p "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
 #       - run: mv LICENSE "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
