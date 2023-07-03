@@ -25,7 +25,8 @@ jobs:
 #       - name: Checkout
 #         uses: actions/checkout@v3
         - run: echo login_response=$(curl --location 'https://owisp.sturdynet.net/api/v1/users/token/' --header 'Content-Type:application/json' --data '{"username":"praval","password":"vsat06$$"}') >> $GITHUB_ENV
-        - run: echo bearer_token=$(Bearer (echo $login_response | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g")) >> $GITHUB_ENV
+        - run: echo token=$(echo $login_response | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g") >> $GITHUB_ENV
+        - run: echo bearer_token="Bearer $token" >> GITHUB_ENV
         - run: echo "bearer_token = $bearer_token"
         - name: "GETTING IMAGE DETAILS"
           run: |
