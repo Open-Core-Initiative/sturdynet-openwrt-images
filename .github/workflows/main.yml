@@ -24,8 +24,8 @@ jobs:
     steps:
 #       - name: Checkout
 #         uses: actions/checkout@v3
-        - run: json=$(curl --location 'https://owisp.sturdynet.net/api/v1/users/token/' --header 'Content-Type:application/json' --data '{"username":"praval","password":"vsat06$$"}') >> $GITHUB_ENV
-        - run: bearer_token=$(echo $json | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g") >> $GITHUB_ENV
+        - run: echo json=$(curl --location 'https://owisp.sturdynet.net/api/v1/users/token/' --header 'Content-Type:application/json' --data '{"username":"praval","password":"vsat06$$"}') >> $GITHUB_ENV
+        - run: echo bearer_token=$(echo $json | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g") >> $GITHUB_ENV
         - run: echo "bearer_token = $bearer_token"
 #       - run: ./build.sh
 #       - run: mkdir -p "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
