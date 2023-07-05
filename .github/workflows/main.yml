@@ -27,7 +27,7 @@ jobs:
         - run: echo login_response=$(curl --location 'https://owisp.sturdynet.net/api/v1/users/token/' --header 'Content-Type:application/json' --data '{"username":"praval","password":"vsat06$$"}') >> $GITHUB_ENV
         - run: echo bearer_token=$(echo $login_response | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g") >> $GITHUB_ENV
         - run: echo "bearer_token = $bearer_token"
-        - run: echo get_image_response=$(curl --location 'https://owisp.sturdynet.net/api/v1/firmware-upgrader/build/' --header 'Authorization:Bearer $bearer_token') >> $GITHUB_ENV
+        - run: echo get_image_response=$(curl --location 'https://owisp.sturdynet.net/api/v1/firmware-upgrader/build/' --header 'authorization:Bearer $bearer_token') >> $GITHUB_ENV
         - run: echo $get_image_response
 #       - run: ./build.sh
 #       - run: mkdir -p "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
