@@ -30,9 +30,9 @@ jobs:
         - name: Create issue using REST API
           run: |
             echo get_image_response=$( \
-            curl --request POST \
+            curl --request GET \
             --location 'https://owisp.sturdynet.net/api/v1/firmware-upgrader/build/' \
-            --header 'authorization: Bearer be3404adb52e2f24e2ac1bedfb3fd4831ab0e130' \
+            --header 'Authorization: Bearer be3404adb52e2f24e2ac1bedfb3fd4831ab0e130' \
             ) >> $GITHUB_ENV
 #         - run: echo get_image_response=$(curl --location 'https://owisp.sturdynet.net/api/v1/firmware-upgrader/build/' --header 'authorization:Bearer $bearer_token') >> $GITHUB_ENV
         - run: echo $get_image_response
