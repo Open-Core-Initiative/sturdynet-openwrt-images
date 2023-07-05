@@ -30,16 +30,6 @@ jobs:
       - run: mv LICENSE "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
       - run: mv "${GITHUB_WORKSPACE}/bin" "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images"
       - run: ./generate-webpage.sh "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}" > "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/index.html"
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          # Upload public repository
-          path: public
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
       - name: LOGIN TO OPENWISP
         run: |
           echo login_response=$( \
@@ -63,3 +53,13 @@ jobs:
           --form 'file=@"${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin"' \
           ) >> $GITHUB_ENV
       - run: echo $post_firmware_image
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload public repository
+          path: public
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
