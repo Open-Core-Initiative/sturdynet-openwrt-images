@@ -29,10 +29,12 @@ jobs:
         - run: echo "bearer_token = $bearer_token"
         - name: Create issue using REST API
           run: |
+            echo get_image_response=$( \
             curl --request POST \
             --location 'https://owisp.sturdynet.net/api/v1/firmware-upgrader/build/' \
-            --header 'authorization: Bearer ${{ bearer_token }}'
-        - run: echo get_image_response=$(curl --location 'https://owisp.sturdynet.net/api/v1/firmware-upgrader/build/' --header 'authorization:Bearer $bearer_token') >> $GITHUB_ENV
+            --header 'authorization: Bearer $bearer_token' \
+            ) >> $GITHUB_ENV
+#         - run: echo get_image_response=$(curl --location 'https://owisp.sturdynet.net/api/v1/firmware-upgrader/build/' --header 'authorization:Bearer $bearer_token') >> $GITHUB_ENV
         - run: echo $get_image_response
 #       - run: ./build.sh
 #       - run: mkdir -p "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
