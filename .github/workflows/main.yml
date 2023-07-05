@@ -60,6 +60,6 @@ jobs:
           --location 'https://owisp.sturdynet.net/api/v1/firmware-upgrader/build/881702f1-f66e-4b5b-ba71-2fec7e506604/image/' \
           --header 'Authorization: Bearer ${{ env.bearer_token }}' \
           --form 'type="openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin"' \
-          --form 'file=@"${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin"' \
+          --form 'file=@/${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin' \
           ) >> $GITHUB_ENV
       - run: echo $post_firmware_image
