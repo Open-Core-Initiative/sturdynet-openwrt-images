@@ -24,12 +24,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
+      # BUILDING THE IMAGES
       - run: mkdir -p "${GITHUB_WORKSPACE}/bin"
       - run: ./build.sh
       - run: mkdir -p "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
       - run: mv LICENSE "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
       - run: mv "${GITHUB_WORKSPACE}/bin" "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images"
       - run: ./generate-webpage.sh "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}" > "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/index.html"
+      
+      # DEPLOYING THE IMAGE DOWNLOAD PAGE
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
@@ -40,25 +44,30 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
+      
+      # UPLOAD FIRWARE TO OPENWISP
+      - run: echo "::add-mask::$OWISP_LOGIN_RESPONSE"
       - name: LOGIN TO OPENWISP
         run: |
-          echo login_response=$( \
+          echo OWISP_LOGIN_RESPONSE=$( \
           curl --request POST \
           --location 'https://owisp.sturdynet.net/api/v1/users/token/' \
           --header 'Content-Type:application/json' \
           --data '{"username":"${{ secrets.OWISP_USERNAME }}","password":"${{ secrets.OWISP_PASSWORD }}"}' \
           ) >> $GITHUB_ENV
-      - name: GET BEARER TOKEN
+      - run: echo "::add-mask::$OWISP_BEARER_TOKEN"
+      - name: GET OPENWISP BEARER TOKEN
         run: |
-          echo bearer_token=$( \
-          echo $login_response | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g" \
+          echo OWISP_BEARER_TOKEN=$( \
+          echo $OWISP_LOGIN_RESPONSE | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g" \
           ) >> $GITHUB_ENV
-      - run: cd ${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/ && chmod 777 openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin && ls -l
-      - run: echo "FIRMWARE_PATH=${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin" >> $GITHUB_ENV
-      - run: echo $FIRMWARE_PATH
-      - name: POST FIRMWARE IMAGE
+      - run: echo "FIRMWARE_FILE_NAME=openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin" >> $GITHUB_ENV
+      - run: cd ${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/ && chmod 777 ${FIRMWARE_FILE_NAME} && ls -l
+      - run: echo "FIRMWARE_FILE_PATH=${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/${FIRMWARE_FILE_NAME}" >> $GITHUB_ENV
+      - run: echo $FIRMWARE_FILE_PATH
+      - name: UPLOAD FIRMWARE IMAGE TO OPENWISP
         run: |
           curl -v --location 'https://owisp.sturdynet.net/api/v1/firmware-upgrader/build/${{ secrets.OWISP_BUILD_ID }}/image/' \
-          --header 'Authorization: Bearer ${{ env.bearer_token }}' \
-          --form 'type="openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin"' \
-          --form 'file=@"${{ env.FIRMWARE_PATH }}"'
+          --header 'Authorization: Bearer ${{ env.OWISP_BEARER_TOKEN }}' \
+          --form 'type="${{ env.FIRMWARE_FILE_NAME }}"' \
+          --form 'file=@"${{ env.FIRMWARE_FILE_PATH }}"'
