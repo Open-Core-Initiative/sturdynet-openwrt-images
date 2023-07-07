@@ -58,10 +58,9 @@ jobs:
           echo OWISP_LOGIN_RESPONSE="$OWISP_LOGIN_RESPONSE" >> $GITHUB_ENV
       - name: GET OPENWISP BEARER TOKEN
         run: |
-          OWISP_BEARER_TOKEN=$( \
+          echo OWISP_BEARER_TOKEN=$( \
           echo $OWISP_LOGIN_RESPONSE | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g" \
-          )
-          echo OWISP_BEARER_TOKEN="$OWISP_BEARER_TOKEN" >> $GITHUB_ENV
+          ) >> $GITHUB_ENV
       - run: echo $OWISP_BEARER_TOKEN
 #       - run: echo "FIRMWARE_FILE_NAME=openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin" >> $GITHUB_ENV
 #       - run: cd ${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/ && chmod 777 ${FIRMWARE_FILE_NAME} && ls -l
