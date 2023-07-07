@@ -50,7 +50,7 @@ jobs:
         run: |
           echo OWISP_LOGIN_RESPONSE=$( \
           curl --request POST \
-          --location '${{ env.OWISP_BASE_URL }}/api/v1/users/token/' \
+          --location '${{ secrets.OWISP_BASE_URL }}/api/v1/users/token/' \
           --header 'Content-Type:application/json' \
           --data '{"username":"${{ secrets.OWISP_USERNAME }}","password":"${{ secrets.OWISP_PASSWORD }}"}' \
           ) >> $GITHUB_ENV
