@@ -25,25 +25,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       
-#       # BUILDING THE IMAGES
-#       - run: mkdir -p "${GITHUB_WORKSPACE}/bin"
-#       - run: ./build.sh
-#       - run: mkdir -p "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
-#       - run: mv LICENSE "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
-#       - run: mv "${GITHUB_WORKSPACE}/bin" "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images"
-#       - run: ./generate-webpage.sh "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}" > "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/index.html"
+      # BUILDING THE IMAGES
+      - run: mkdir -p "${GITHUB_WORKSPACE}/bin"
+      - run: ./build.sh
+      - run: mkdir -p "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
+      - run: mv LICENSE "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
+      - run: mv "${GITHUB_WORKSPACE}/bin" "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images"
+      - run: ./generate-webpage.sh "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}" > "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/index.html"
       
-#       # DEPLOYING THE IMAGE DOWNLOAD PAGE
-#       - name: Setup Pages
-#         uses: actions/configure-pages@v3
-#       - name: Upload artifact
-#         uses: actions/upload-pages-artifact@v1
-#         with:
-#           # Upload public repository
-#           path: public
-#       - name: Deploy to GitHub Pages
-#         id: deployment
-#         uses: actions/deploy-pages@v2
+      # DEPLOYING THE IMAGE DOWNLOAD PAGE
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload public repository
+          path: public
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
       
       # UPLOAD FIRWARE TO OPENWISP
       - name: LOGIN TO OPENWISP
@@ -56,10 +56,6 @@ jobs:
           )
           echo ::add-mask::$OWISP_LOGIN_RESPONSE
           echo OWISP_LOGIN_RESPONSE="$OWISP_LOGIN_RESPONSE" >> $GITHUB_ENV
-#       - name: Mask OWISP_LOGIN_RESPONSE
-#         run: |
-#           echo "Masking secret variable..."
-#           echo "::add-mask::$OWISP_LOGIN_RESPONSE"
       - name: GET OPENWISP BEARER TOKEN
         run: |
           OWISP_BEARER_TOKEN=$( \
@@ -67,17 +63,12 @@ jobs:
           )
           echo ::add-mask::$OWISP_BEARER_TOKEN
           echo OWISP_BEARER_TOKEN="$OWISP_BEARER_TOKEN" >> $GITHUB_ENV
-#       - name: Mask OWISP_BEARER_TOKEN
-#         run: |
-#           echo "Masking secret variable..."
-#           echo "::add-mask::$OWISP_BEARER_TOKEN"
-      - run: echo $OWISP_BEARER_TOKEN && echo $OWISP_LOGIN_RESPONSE
-#       - run: echo "FIRMWARE_FILE_NAME=openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin" >> $GITHUB_ENV
-#       - run: cd ${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/ && chmod 777 ${FIRMWARE_FILE_NAME} && ls -l
-#       - run: echo "FIRMWARE_FILE_PATH=${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/${FIRMWARE_FILE_NAME}" >> $GITHUB_ENV
-#       - name: UPLOAD FIRMWARE IMAGE TO OPENWISP
-#         run: |
-#           curl -v --location '${{ env.OWISP_BASE_URL }}/api/v1/firmware-upgrader/build/${{ secrets.OWISP_BUILD_ID }}/image/' \
-#           --header 'Authorization: Bearer ${{ env.OWISP_BEARER_TOKEN }}' \
-#           --form 'type="${{ env.FIRMWARE_FILE_NAME }}"' \
-#           --form 'file=@"${{ env.FIRMWARE_FILE_PATH }}"'
+      - run: echo "FIRMWARE_FILE_NAME=openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin" >> $GITHUB_ENV
+      - run: cd ${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/ && chmod 777 ${FIRMWARE_FILE_NAME} && ls -l
+      - run: echo "FIRMWARE_FILE_PATH=${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/${FIRMWARE_FILE_NAME}" >> $GITHUB_ENV
+      - name: UPLOAD FIRMWARE IMAGE TO OPENWISP
+        run: |
+          curl -v --location '${{ env.OWISP_BASE_URL }}/api/v1/firmware-upgrader/build/${{ secrets.OWISP_BUILD_ID }}/image/' \
+          --header 'Authorization: Bearer ${{ env.OWISP_BEARER_TOKEN }}' \
+          --form 'type="${{ env.FIRMWARE_FILE_NAME }}"' \
+          --form 'file=@"${{ env.FIRMWARE_FILE_PATH }}"'
