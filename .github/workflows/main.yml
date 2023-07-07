@@ -46,16 +46,24 @@ jobs:
 #         uses: actions/deploy-pages@v2
       
       # UPLOAD FIRWARE TO OPENWISP
+#       - name: LOGIN TO OPENWISP
+#         run: |
+#           OWISP_LOGIN_RESPONSE=$( \
+#           curl --request POST \
+#           --location '${{ secrets.OWISP_BASE_URL }}/api/v1/users/token/' \
+#           --header 'Content-Type:application/json' \
+#           --data '{"username":"${{ secrets.OWISP_USERNAME }}","password":"${{ secrets.OWISP_PASSWORD }}"}' \
+#           )
+#           echo ::add-mask::$OWISP_LOGIN_RESPONSE
+#           echo OWISP_LOGIN_RESPONSE="$OWISP_LOGIN_RESPONSE" >> $GITHUB_ENV
       - name: LOGIN TO OPENWISP
         run: |
-          OWISP_LOGIN_RESPONSE=$( \
+          echo OWISP_LOGIN_RESPONSE=$( \
           curl --request POST \
           --location '${{ secrets.OWISP_BASE_URL }}/api/v1/users/token/' \
           --header 'Content-Type:application/json' \
           --data '{"username":"${{ secrets.OWISP_USERNAME }}","password":"${{ secrets.OWISP_PASSWORD }}"}' \
-          )
-          echo ::add-mask::$OWISP_LOGIN_RESPONSE
-          echo OWISP_LOGIN_RESPONSE="$OWISP_LOGIN_RESPONSE" >> $GITHUB_ENV
+          ) >> $GITHUB_ENV
       - name: GET OPENWISP BEARER TOKEN
         run: |
           echo OWISP_BEARER_TOKEN=$( \
