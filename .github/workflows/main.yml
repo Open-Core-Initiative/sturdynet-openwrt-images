@@ -25,41 +25,38 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - run: mkdir -p "${GITHUB_WORKSPACE}/bin"
-#       - run: ./build.sh
+      - run: ./build.sh
       - run: mkdir -p "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
-      - run: echo firmware_path=$(${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin) >> GITHUB_ENV
-      - run: echo ${{ env.firmware_path }}
-#       - run: mv LICENSE "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
-#       - run: mv "${GITHUB_WORKSPACE}/bin" "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images"
-#       - run: ./generate-webpage.sh "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}" > "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/index.html"
-#       - name: Setup Pages
-#         uses: actions/configure-pages@v3
-#       - name: Upload artifact
-#         uses: actions/upload-pages-artifact@v1
-#         with:
-#           # Upload public repository
-#           path: public
-#       - name: Deploy to GitHub Pages
-#         id: deployment
-#         uses: actions/deploy-pages@v2
-#       - name: LOGIN TO OPENWISP
-#         run: |
-#           echo login_response=$( \
-#           curl --request POST \
-#           --location 'https://owisp.sturdynet.net/api/v1/users/token/' \
-#           --header 'Content-Type:application/json' \
-#           --data '{"username":"praval","password":"vsat06$$"}' \
-#           ) >> $GITHUB_ENV
-#       - name: GET BEARER TOKEN
-#         run: |
-#           echo bearer_token=$( \
-#           echo $login_response | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g" \
-#           ) >> $GITHUB_ENV
-#       - run: cd ${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/ && chmod 777 openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin && ls -l
-#       - run: echo firmware_path=${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin >> GITHUB_ENV
-#       - name: POST FIRMWARE IMAGE
-#         run: |
-#           curl -v --location 'https://owisp.sturdynet.net/api/v1/firmware-upgrader/build/881702f1-f66e-4b5b-ba71-2fec7e506604/image/' \
-#           --header 'Authorization: Bearer ${{ env.bearer_token }}' \
-#           --form 'type="openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin"' \
-#           --form 'file=@"${{ env.firmware_path }}"'
+      - run: mv LICENSE "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
+      - run: mv "${GITHUB_WORKSPACE}/bin" "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images"
+      - run: ./generate-webpage.sh "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}" > "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/index.html"
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload public repository
+          path: public
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+      - name: LOGIN TO OPENWISP
+        run: |
+          echo login_response=$( \
+          curl --request POST \
+          --location 'https://owisp.sturdynet.net/api/v1/users/token/' \
+          --header 'Content-Type:application/json' \
+          --data '{"username":"praval","password":"vsat06$$"}' \
+          ) >> $GITHUB_ENV
+      - name: GET BEARER TOKEN
+        run: |
+          echo bearer_token=$( \
+          echo $login_response | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g" \
+          ) >> $GITHUB_ENV
+      - run: cd ${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/ && chmod 777 openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin && ls -l
+      - name: POST FIRMWARE IMAGE
+        run: |
+          curl -v --location 'https://owisp.sturdynet.net/api/v1/firmware-upgrader/build/881702f1-f66e-4b5b-ba71-2fec7e506604/image/' \
+          --header 'Authorization: Bearer ${{ env.bearer_token }}' \
+          --form 'type="openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin"' \
+          --form 'file=@"/__w/sturdynet-openwrt-images/sturdynet-openwrt-images/public/ipq40xx/images/openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin"'
