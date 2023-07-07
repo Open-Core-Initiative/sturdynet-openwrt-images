@@ -54,7 +54,7 @@ jobs:
           --header 'Content-Type:application/json' \
           --data '{"username":"${{ secrets.OWISP_USERNAME }}","password":"${{ secrets.OWISP_PASSWORD }}"}' \
           ) >> $GITHUB_ENV
-          echo "::add-mask::$OWISP_LOGIN_RESPONSE"
+          echo "::add-mask::${{ env.OWISP_LOGIN_RESPONSE }}"
 #       - name: Mask OWISP_LOGIN_RESPONSE
 #         run: |
 #           echo "Masking secret variable..."
@@ -64,7 +64,7 @@ jobs:
           echo OWISP_BEARER_TOKEN=$( \
           echo $OWISP_LOGIN_RESPONSE | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g" \
           ) >> $GITHUB_ENV
-          echo "::add-mask::$OWISP_BEARER_TOKEN"
+          echo "::add-mask::${{ env.OWISP_BEARER_TOKEN }}"
 #       - name: Mask OWISP_BEARER_TOKEN
 #         run: |
 #           echo "Masking secret variable..."
