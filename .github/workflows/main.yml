@@ -48,29 +48,30 @@ jobs:
       # UPLOAD FIRWARE TO OPENWISP
       - name: LOGIN TO OPENWISP
         run: |
-          echo OWISP_LOGIN_RESPONSE=$( \
+          OWISP_LOGIN_RESPONSE=$( \
           curl --request POST \
           --location '${{ secrets.OWISP_BASE_URL }}/api/v1/users/token/' \
           --header 'Content-Type:application/json' \
           --data '{"username":"${{ secrets.OWISP_USERNAME }}","password":"${{ secrets.OWISP_PASSWORD }}"}' \
-          ) >> $GITHUB_ENV
+          )
+          echo ::add-mask::$OWISP_LOGIN_RESPONSE
+          echo OWISP_LOGIN_RESPONSE="$OWISP_LOGIN_RESPONSE" >> $GITHUB_ENV
 #       - name: Mask OWISP_LOGIN_RESPONSE
 #         run: |
 #           echo "Masking secret variable..."
 #           echo "::add-mask::$OWISP_LOGIN_RESPONSE"
       - name: GET OPENWISP BEARER TOKEN
         run: |
-          echo "::add-mask::${{ env.OWISP_LOGIN_RESPONSE }}"
-          echo OWISP_BEARER_TOKEN=$( \
+          OWISP_BEARER_TOKEN=$( \
           echo $OWISP_LOGIN_RESPONSE | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g" \
-          ) >> $GITHUB_ENV
+          )
+          echo ::add-mask::$OWISP_BEARER_TOKEN
+          echo OWISP_BEARER_TOKEN="$OWISP_BEARER_TOKEN" >> $GITHUB_ENV
 #       - name: Mask OWISP_BEARER_TOKEN
 #         run: |
 #           echo "Masking secret variable..."
 #           echo "::add-mask::$OWISP_BEARER_TOKEN"
-      - run: |
-          echo "::add-mask::${{ env.OWISP_BEARER_TOKEN }}"
-          echo $OWISP_BEARER_TOKEN && echo $OWISP_LOGIN_RESPONSE
+      - run: echo $OWISP_BEARER_TOKEN && echo $OWISP_LOGIN_RESPONSE
 #       - run: echo "FIRMWARE_FILE_NAME=openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin" >> $GITHUB_ENV
 #       - run: cd ${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/ && chmod 777 ${FIRMWARE_FILE_NAME} && ls -l
 #       - run: echo "FIRMWARE_FILE_PATH=${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/${FIRMWARE_FILE_NAME}" >> $GITHUB_ENV
