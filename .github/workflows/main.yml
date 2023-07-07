@@ -68,7 +68,7 @@ jobs:
       - run: echo "FIRMWARE_FILE_PATH=${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/${FIRMWARE_FILE_NAME}" >> $GITHUB_ENV
       - name: UPLOAD FIRMWARE IMAGE TO OPENWISP
         run: |
-          curl -v --location '${{ env.OWISP_BASE_URL }}/api/v1/firmware-upgrader/build/${{ secrets.OWISP_BUILD_ID }}/image/' \
+          curl -v --location '${{ secrets.OWISP_BASE_URL }}/api/v1/firmware-upgrader/build/${{ secrets.OWISP_BUILD_ID }}/image/' \
           --header 'Authorization: Bearer ${{ env.OWISP_BEARER_TOKEN }}' \
           --form 'type="${{ env.FIRMWARE_FILE_NAME }}"' \
           --form 'file=@"${{ env.FIRMWARE_FILE_PATH }}"'
