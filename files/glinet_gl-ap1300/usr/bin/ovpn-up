@@ -1,0 +1,7 @@
+#!/bin/sh
+
+sed -i '/owisp/s/^#*//g' /etc/hosts
+
+uci set openwisp.http.management_interface='vpn'
+uci commit
+reload_config

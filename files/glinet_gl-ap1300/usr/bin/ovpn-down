@@ -1,0 +1,7 @@
+#!/bin/sh
+
+sed -i '/owisp/s/^#*/#/g' /etc/hosts
+
+uci delete openwisp.http.management_interface
+uci commit
+reload_config
