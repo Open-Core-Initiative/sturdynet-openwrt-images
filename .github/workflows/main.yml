@@ -29,7 +29,6 @@ jobs:
       - run: mkdir -p "${GITHUB_WORKSPACE}/bin"
       - run: ./build.sh
       - run: mkdir -p "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
-      - run: mv LICENSE "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}"
       - run: mv "${GITHUB_WORKSPACE}/bin" "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images"
       - run: ./generate-webpage.sh "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}" > "${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/index.html"
       
