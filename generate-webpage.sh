@@ -82,8 +82,9 @@ cat <<END
         -----------------------------------------------------
                     Based on OpenWrt ${OPENWRT_VERSION}
                Build on <em>$(date -R)</em>
-        -----------------------------------------------------
- 	</pre>
+                        Target: <b>${GITHUB_REF##*/}</b>
+        ----------------------------------------------------- 	
+	</pre>
 	<table class="ascii-table">
 	      <tr>
 	        <th>Downloads</th>
