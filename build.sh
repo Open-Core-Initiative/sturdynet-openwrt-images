@@ -12,7 +12,7 @@ mv -v ${GITHUB_WORKSPACE}/keys/* ${IMAGEBUILDER_HOME}/keys/
 cat >> "${GITHUB_WORKSPACE}/repositories.conf" <<END
 
 ## Custom Repository
-src/gz custom_packages https://open-core-initiative.github.io/sturdynet-openwrt-packages/main/releases/${OPENWRT_VERSION}/packages/${OPENWRT_ARCH}/custom
+src/gz custom_packages https://open-core-initiative.github.io/sturdynet-openwrt-packages/ipq40xx/releases/${OPENWRT_VERSION}/packages/${OPENWRT_ARCH}/custom
 END
 
 
