@@ -22,7 +22,7 @@
 
 ## Prerequisites
 
-1. Github Runner assigned to the project. A runner needs to be running Ubuntu and has Docker installed. You can learn about self-hosted runners here.
+1. Github Runner assigned to the project. A runner needs to be running Ubuntu and has Docker installed. You can learn about self-hosted runners [here](#how-to-setup-a-self-hosted-github-runner).
 2. Imagebuilder docker image of the intended build target created from [sturdynet-openwrt-imagebuilder repository](https://github.com/Open-Core-Initiative/sturdynet-openwrt-imagebuilder) repository.
 3. Working Openwisp instance with Admin access (Only needed if planning to upload an image to Openwisp).
 
