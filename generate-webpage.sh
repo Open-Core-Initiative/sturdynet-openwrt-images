@@ -68,6 +68,8 @@ cat <<END
 	        padding: 5px; /* Remove padding */
 	        margin: 5px; /* Remove margins */
 	      }
+
+	      a:link { text-decoration: none; }
 	    </style>
 </head>
 <body>
