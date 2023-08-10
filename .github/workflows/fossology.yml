@@ -9,23 +9,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  scan:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Set up FOSSology
-        env:
-          FOSSOLOGY_API_TOKEN: ${{ secrets.FOSSOLOGY_API_TOKEN }}
-        run: |
-          # Replace with your FOSSology server URL
-          FOSSOLOGY_SERVER_URL="http://35.90.154.168/repo"
-
-          # Authenticate and get token
-          FOSSOLOGY_TOKEN=$(curl -k -X POST -d "user=fossy" -d "password=password" "${FOSSOLOGY_SERVER_URL}/api/v1/tokens")
-
-          # Extract token from response
-          FOSSOLOGY_TOKEN=$(echo "$FOSSOLOGY_TOKEN" | jq -r '.token')
-
-          # Run FOSSology scan
-          curl -k -X POST -H "Authorization: ${FOSSOLOGY_TOKEN}" "${FOSSOLOGY_SERVER_URL}/api/v1/scan" -F "file=@."
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Scan with FOSSology
+      run: |
+        # Package or prepare the code
+        tar -czvf code_to_scan.tar.gz .
+        # Upload and scan with FOSSology using fosscli or other methods
+        fosscli -u http://35.90.154.168/repo -n eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTQzMDM5OTksIm5iZiI6MTY5MTYyNTYwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.fp2upL5iVozQWIFa7aJ1F7imyDUkTCxbMBLrwt3ICMA upload report -f code_to_scan.tar.gz
