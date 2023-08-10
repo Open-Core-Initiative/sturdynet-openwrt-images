@@ -1,0 +1,27 @@
+name: FOSSology Integration
+
+on: [push]
+
+jobs:
+  fossology_scan:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up FOSSology
+      env:
+        FOSSOLOGY_API_TOKEN: ${{ secrets.FOSSOLOGY_API_TOKEN }}
+      run: |
+        # Replace with your FOSSology server URL
+        FOSSOLOGY_SERVER_URL="http://35.90.154.168/repo"
+
+        # Authenticate and get token
+        FOSSOLOGY_TOKEN=$(curl -k -X POST -d "user=fossy" -d "password=password" "${FOSSOLOGY_SERVER_URL}/api/v1/tokens")
+
+        # Extract token from response
+        FOSSOLOGY_TOKEN=$(echo "$FOSSOLOGY_TOKEN" | jq -r '.token')
+
+        # Run FOSSology scan
+        curl -k -X POST -H "Authorization: ${FOSSOLOGY_TOKEN}" "${FOSSOLOGY_SERVER_URL}/api/v1/scan" -F "file=@."
