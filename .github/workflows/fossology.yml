@@ -14,7 +14,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - run: apt install curl
       - name: Set up FOSSology
         env:
           FOSSOLOGY_API_TOKEN: ${{ secrets.FOSSOLOGY_API_TOKEN }}
