@@ -17,6 +17,6 @@ jobs:
     - name: Scan with FOSSology
       run: |
         # Package or prepare the code
-        tar -czvf code_to_scan.tar.gz .
+        tar -czvf code_to_scan.tar.gz ${GITHUB_WORKSPACE}
         # Upload and scan with FOSSology using fosscli or other methods
         fosscli -u http://35.90.154.168/repo -n eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTQzMDM5OTksIm5iZiI6MTY5MTYyNTYwMCwianRpIjoiTWk0eiIsInNjb3BlIjoid3JpdGUifQ.fp2upL5iVozQWIFa7aJ1F7imyDUkTCxbMBLrwt3ICMA upload report -f code_to_scan.tar.gz
