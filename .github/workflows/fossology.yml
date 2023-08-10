@@ -1,4 +1,4 @@
-name: building sturdynet images (target->ipq40xx)
+name: fossology scan
 
 on:
   # Runs on pushes targeting the default branch
@@ -9,25 +9,23 @@ on:
   workflow_dispatch:
 
 jobs:
-  fossology_scan:
+  build:
     runs-on: self-hosted
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Set up FOSSology
+        env:
+          FOSSOLOGY_API_TOKEN: ${{ secrets.FOSSOLOGY_API_TOKEN }}
+        run: |
+          # Replace with your FOSSology server URL
+          FOSSOLOGY_SERVER_URL="http://35.90.154.168/repo"
 
-    - name: Set up FOSSology
-      env:
-        FOSSOLOGY_API_TOKEN: ${{ secrets.FOSSOLOGY_API_TOKEN }}
-      run: |
-        # Replace with your FOSSology server URL
-        FOSSOLOGY_SERVER_URL="http://35.90.154.168/repo"
+          # Authenticate and get token
+          FOSSOLOGY_TOKEN=$(curl -k -X POST -d "user=fossy" -d "password=password" "${FOSSOLOGY_SERVER_URL}/api/v1/tokens")
 
-        # Authenticate and get token
-        FOSSOLOGY_TOKEN=$(curl -k -X POST -d "user=fossy" -d "password=password" "${FOSSOLOGY_SERVER_URL}/api/v1/tokens")
+          # Extract token from response
+          FOSSOLOGY_TOKEN=$(echo "$FOSSOLOGY_TOKEN" | jq -r '.token')
 
-        # Extract token from response
-        FOSSOLOGY_TOKEN=$(echo "$FOSSOLOGY_TOKEN" | jq -r '.token')
-
-        # Run FOSSology scan
-        curl -k -X POST -H "Authorization: ${FOSSOLOGY_TOKEN}" "${FOSSOLOGY_SERVER_URL}/api/v1/scan" -F "file=@."
+          # Run FOSSology scan
+          curl -k -X POST -H "Authorization: ${FOSSOLOGY_TOKEN}" "${FOSSOLOGY_SERVER_URL}/api/v1/scan" -F "file=@."
