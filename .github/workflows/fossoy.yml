@@ -1,46 +1,46 @@
-name: test api run
+# name: test api run
 
-on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
+# on:
+#   # Runs on pushes targeting the default branch
+#   push:
+#     branches: ["main"]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+#   # Allows you to run this workflow manually from the Actions tab
+#   workflow_dispatch:
 
 
-permissions: write-all
+# permissions: write-all
 
-jobs:
-  build:
-    runs-on: self-hosted
-    steps:
-        - name: Checkout
-          uses: actions/checkout@v3
-        # UPLOAD FIRWARE TO OPENWISP
-        - name: LOGIN TO OPENWISP
-          run: |
-            OWISP_LOGIN_RESPONSE=$( \
-            curl --request POST \
-            --location '${{ secrets.OWISP_BASE_URL }}/api/v1/users/token/' \
-            --header 'Content-Type:application/json' \
-            --data '{"username":"${{ secrets.OWISP_USERNAME }}","password":"${{ secrets.OWISP_PASSWORD }}"}' \
-            )
-            echo ::add-mask::$OWISP_LOGIN_RESPONSE
-            echo OWISP_LOGIN_RESPONSE="$OWISP_LOGIN_RESPONSE" >> $GITHUB_ENV
-        - name: GET OPENWISP BEARER TOKEN
-          run: |
-            OWISP_BEARER_TOKEN=$( \
-            echo $OWISP_LOGIN_RESPONSE | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g" \
-            )
-            echo ::add-mask::$OWISP_BEARER_TOKEN
-            echo OWISP_BEARER_TOKEN="$OWISP_BEARER_TOKEN" >> $GITHUB_ENV
-        # - run: echo "FIRMWARE_FILE_NAME=openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin" >> $GITHUB_ENV
-        # - run: cd ${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/ && chmod 777 ${FIRMWARE_FILE_NAME} && ls -l
-        # - run: echo "FIRMWARE_FILE_PATH=${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/${FIRMWARE_FILE_NAME}" >> $GITHUB_ENV
-        # - name: UPLOAD FIRMWARE IMAGE TO OPENWISP
-        #   run: |
-        #     curl -v --location '${{ secrets.OWISP_BASE_URL }}/api/v1/firmware-upgrader/build/${{ secrets.OWISP_BUILD_ID }}/image/' \
-        #     --header 'Authorization: Bearer ${{ env.OWISP_BEARER_TOKEN }}' \
-        #     --form 'type="${{ env.FIRMWARE_FILE_NAME }}"' \
-        #     --form 'file=@"${{ env.FIRMWARE_FILE_PATH }}"'
+# jobs:
+#   build:
+#     runs-on: self-hosted
+#     steps:
+#         - name: Checkout
+#           uses: actions/checkout@v3
+#         # UPLOAD FIRWARE TO OPENWISP
+#         - name: LOGIN TO OPENWISP
+#           run: |
+#             OWISP_LOGIN_RESPONSE=$( \
+#             curl --request POST \
+#             --location '${{ secrets.OWISP_BASE_URL }}/api/v1/users/token/' \
+#             --header 'Content-Type:application/json' \
+#             --data '{"username":"${{ secrets.OWISP_USERNAME }}","password":"${{ secrets.OWISP_PASSWORD }}"}' \
+#             )
+#             echo ::add-mask::$OWISP_LOGIN_RESPONSE
+#             echo OWISP_LOGIN_RESPONSE="$OWISP_LOGIN_RESPONSE" >> $GITHUB_ENV
+#         - name: GET OPENWISP BEARER TOKEN
+#           run: |
+#             OWISP_BEARER_TOKEN=$( \
+#             echo $OWISP_LOGIN_RESPONSE | sed "s/{.*\"token\":\"\([^\"]*\).*}/\1/g" \
+#             )
+#             echo ::add-mask::$OWISP_BEARER_TOKEN
+#             echo OWISP_BEARER_TOKEN="$OWISP_BEARER_TOKEN" >> $GITHUB_ENV
+#         # - run: echo "FIRMWARE_FILE_NAME=openwrt-22.03.1-ipq40xx-generic-glinet_gl-ap1300-squashfs-nand-sysupgrade.bin" >> $GITHUB_ENV
+#         # - run: cd ${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/ && chmod 777 ${FIRMWARE_FILE_NAME} && ls -l
+#         # - run: echo "FIRMWARE_FILE_PATH=${GITHUB_WORKSPACE}/public/${GITHUB_REF##*/}/images/${FIRMWARE_FILE_NAME}" >> $GITHUB_ENV
+#         # - name: UPLOAD FIRMWARE IMAGE TO OPENWISP
+#         #   run: |
+#         #     curl -v --location '${{ secrets.OWISP_BASE_URL }}/api/v1/firmware-upgrader/build/${{ secrets.OWISP_BUILD_ID }}/image/' \
+#         #     --header 'Authorization: Bearer ${{ env.OWISP_BEARER_TOKEN }}' \
+#         #     --form 'type="${{ env.FIRMWARE_FILE_NAME }}"' \
+#         #     --form 'file=@"${{ env.FIRMWARE_FILE_PATH }}"'
