@@ -1,4 +1,4 @@
-name: building sturdynet images (target->ipq40xx)
+name: Building Sturdynet images (target->ipq40xx)
 
 on:
   # Runs on pushes targeting the default branch
